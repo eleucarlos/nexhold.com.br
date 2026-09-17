@@ -86,6 +86,15 @@ gh api repos/eleucarlos/nexhold.com.br/pages -X PUT --input - <<'EOF'
 EOF
 ```
 
+- **Renovação: automática, feita pelo GitHub.** Let's Encrypt emite certificados de
+  90 dias; o GitHub Pages renova sozinho semanas antes de expirar. Não existe cron,
+  servidor ou script nosso — zero manutenção.
+- Condições para a renovação não falhar:
+  1. CNAME `www → eleucarlos.github.io` continuar no DNS (DNS only, cinza)
+  2. Arquivo `CNAME` continuar na raiz do repo
+  3. Se um dia criar CAA no apex, incluir `letsencrypt.org`
+- Sintoma de renovação falha: aviso de certificado no navegador perto do vencimento.
+  Correção: re-trigger acima (remove/re-adiciona domínio).
 - Não existe CAA no apex; o CAA herdado de `eleucarlos.github.io` já permite
   `letsencrypt.org`. Se um dia criar CAA em `nexhold.com.br`, incluir `letsencrypt.org`.
 
