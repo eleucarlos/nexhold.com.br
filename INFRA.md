@@ -55,8 +55,30 @@ Regras:
 ## TLS / HTTPS
 
 - Certificado Let's Encrypt emitido pelo próprio GitHub após o CNAME propagar.
-  Emissão leva de minutos a ~1h após o DNS.
-- `Enforce HTTPS`: ativar **somente depois** do certificado existir:
+  Emissão oficial: **até 1h**. Estado em 17/09/2026: **emitido** (`CN = www.nexhold.com.br`)
+  e **`Enforce HTTPS` ativo** — HTTP responde `301` para HTTPS.
+- Se o certificado travar (API retorna `404 "The certificate does not exist yet"` por
+  mais de 1h): remover e re-adicionar o domínio customizado re-dispara a emissão:
+
+```bash
+gh api repos/eleucarlos/nexhold.com.br/pages -X PUT --input - <<'EOF'
+{"cname": null}
+EOF
+sleep 5
+gh api repos/eleucarlos/nexhold.com.br/pages -X PUT --input - <<'EOF'
+{"cname": "www.nexhold.com.br"}
+EOF
+```
+
+- Conferir cert na borda:
+
+```bash
+echo | openssl s_client -connect www.nexhold.com.br:443 -servername www.nexhold.com.br 2>/dev/null \
+  | openssl x509 -noout -subject
+# ok quando mostra: CN = www.nexhold.com.br  (CN = *.github.io = ainda emitindo)
+```
+
+- `Enforce HTTPS` (só funciona com certificado emitido):
 
 ```bash
 gh api repos/eleucarlos/nexhold.com.br/pages -X PUT --input - <<'EOF'
@@ -64,8 +86,8 @@ gh api repos/eleucarlos/nexhold.com.br/pages -X PUT --input - <<'EOF'
 EOF
 ```
 
-Se retornar `404 "The certificate does not exist yet"`, o cert ainda não saiu —
-aguardar e tentar de novo. Status atual: `gh api repos/eleucarlos/nexhold.com.br/pages`.
+- Não existe CAA no apex; o CAA herdado de `eleucarlos.github.io` já permite
+  `letsencrypt.org`. Se um dia criar CAA em `nexhold.com.br`, incluir `letsencrypt.org`.
 
 ## Deploy / como alterar o site
 
