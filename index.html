@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXHOLD Solutions — Cloud Architecture & AI Platforms</title>
+<meta name="description" content="Arquitetura de nuvem, plataformas de IA em produção, Kubernetes, Zero Trust e FinOps. Projetos por escopo fechado, hora (pacote mínimo 80h) ou white label.">
+<meta property="og:title" content="NEXHOLD Solutions">
+<meta property="og:description" content="Cloud Architecture · AI Platforms · Zero Trust · FinOps — White label, fixed-scope or hourly.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.nexhold.com.br/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◈</text></svg>">
+<style>
+:root{
+  --bg:#05060a; --bg2:#0a0d16; --card:rgba(255,255,255,.035); --card-border:rgba(255,255,255,.09);
+  --txt:#e8ecf4; --txt2:#9aa3b8; --acc:#4f7cff; --acc2:#00e5c7; --glow:rgba(79,124,255,.35);
+  --mono:'JetBrains Mono','SFMono-Regular',Consolas,monospace;
+  --sans:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
+}
+[data-theme="light"]{
+  --bg:#f4f6fb; --bg2:#ffffff; --card:rgba(10,20,50,.035); --card-border:rgba(10,20,50,.12);
+  --txt:#10141f; --txt2:#4a5468; --acc:#2f57e0; --acc2:#00897b; --glow:rgba(47,87,224,.25);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans); background:var(--bg); color:var(--txt);
+  line-height:1.6; overflow-x:hidden; transition:background .4s,color .4s;
+}
+::selection{background:var(--acc);color:#fff}
+
+/* background fx */
+.bg-fx{position:fixed;inset:0;z-index:-2;pointer-events:none}
+.bg-fx::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 45% at 15% -5%, var(--glow), transparent 60%),
+    radial-gradient(ellipse 45% 40% at 90% 15%, rgba(0,229,199,.12), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 50% 110%, var(--glow), transparent 65%);
+}
+[data-theme="light"] .bg-fx::before{
+  background:
+    radial-gradient(ellipse 60% 45% at 15% -5%, rgba(47,87,224,.14), transparent 60%),
+    radial-gradient(ellipse 45% 40% at 90% 15%, rgba(0,137,123,.10), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 50% 110%, rgba(47,87,224,.10), transparent 65%);
+}
+.bg-grid{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(var(--card-border) 1px,transparent 1px),linear-gradient(90deg,var(--card-border) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 30%,transparent 75%);
+}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px clamp(16px,5vw,56px);
+  background:color-mix(in srgb,var(--bg) 72%,transparent);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--card-border);
+}
+.logo{font-family:var(--mono);font-weight:700;font-size:1.15rem;letter-spacing:.14em;text-decoration:none;color:var(--txt)}
+.logo b{color:var(--acc2)}
+.nav-links{display:flex;gap:26px;align-items:center}
+.nav-links a{color:var(--txt2);text-decoration:none;font-size:.86rem;letter-spacing:.04em;transition:color .2s}
+.nav-links a:hover{color:var(--acc2)}
+@media(max-width:760px){.nav-links a{display:none}}
+.ctrl{display:flex;gap:8px;align-items:center}
+.flag-btn,.theme-btn{
+  background:var(--card);border:1px solid var(--card-border);border-radius:8px;
+  color:var(--txt);cursor:pointer;font-size:1rem;padding:5px 9px;line-height:1;
+  transition:border-color .2s,box-shadow .2s;
+}
+.flag-btn:hover,.theme-btn:hover{border-color:var(--acc2)}
+.flag-btn.active{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc),0 0 12px var(--glow)}
+.flag-btn svg,.theme-btn svg{display:block;vertical-align:middle}
+
+/* hero */
+header.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+  padding:120px clamp(16px,6vw,72px) 60px;position:relative}
+.tag{font-family:var(--mono);font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;color:var(--acc2);margin-bottom:22px}
+h1{font-size:clamp(2.1rem,5.6vw,4.2rem);line-height:1.08;font-weight:800;letter-spacing:-.02em;max-width:16ch}
+h1 .grad{background:linear-gradient(92deg,var(--acc) 10%,var(--acc2) 90%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero p.sub{margin-top:26px;max-width:62ch;color:var(--txt2);font-size:clamp(1rem,1.6vw,1.15rem)}
+.cta-row{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:600;font-size:.95rem;
+  padding:13px 26px;border-radius:10px;transition:transform .18s,box-shadow .18s,border-color .18s}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:linear-gradient(92deg,var(--acc),#6f5cff);color:#fff;box-shadow:0 8px 30px var(--glow)}
+.btn-ghost{border:1px solid var(--card-border);color:var(--txt);background:var(--card)}
+.btn-ghost:hover{border-color:var(--acc2)}
+.scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.3em;color:var(--txt2);
+  animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+
+/* sections */
+section{padding:clamp(60px,9vw,110px) clamp(16px,6vw,72px);max-width:1240px;margin:0 auto}
+.sec-head{margin-bottom:44px}
+.sec-head .num{font-family:var(--mono);color:var(--acc2);font-size:.85rem;letter-spacing:.2em}
+h2{font-size:clamp(1.6rem,3.4vw,2.5rem);font-weight:800;letter-spacing:-.015em;margin-top:8px}
+.sec-head p{color:var(--txt2);margin-top:12px;max-width:64ch}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+  background:var(--card-border);border:1px solid var(--card-border);border-radius:14px;overflow:hidden}
+.stat{background:var(--bg2);padding:30px 22px;text-align:center}
+.stat .v{font-family:var(--mono);font-size:clamp(1.6rem,3vw,2.3rem);font-weight:700;
+  background:linear-gradient(92deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.stat .l{font-size:.8rem;color:var(--txt2);margin-top:6px;letter-spacing:.05em}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:26px 24px;
+  position:relative;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s}
+.card:hover{transform:translateY(-4px);border-color:var(--acc);box-shadow:0 12px 40px -12px var(--glow)}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--acc),var(--acc2));opacity:0;transition:opacity .2s}
+.card:hover::before{opacity:1}
+.card .ic{font-size:1.5rem;margin-bottom:14px;display:block}
+.card h3{font-size:1.06rem;font-weight:700;margin-bottom:8px}
+.card p{font-size:.9rem;color:var(--txt2)}
+.chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:var(--mono);font-size:.68rem;letter-spacing:.04em;color:var(--acc2);
+  border:1px solid color-mix(in srgb,var(--acc2) 40%,transparent);border-radius:99px;padding:3px 10px}
+
+/* timeline-ish delivery list */
+.dlist{display:grid;gap:12px}
+.ditem{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;
+  background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:20px 22px}
+.ditem .k{font-family:var(--mono);color:var(--acc2);font-size:.78rem;padding-top:3px;min-width:118px;letter-spacing:.08em;text-transform:uppercase}
+.ditem p{font-size:.92rem;color:var(--txt2)}
+.ditem p b{color:var(--txt);font-weight:600}
+@media(max-width:560px){.ditem{grid-template-columns:1fr}.ditem .k{min-width:0}}
+
+/* models */
+.models{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
+.model{background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:32px 28px;
+  display:flex;flex-direction:column;gap:14px;transition:transform .2s,border-color .2s}
+.model:hover{transform:translateY(-4px);border-color:var(--acc2)}
+.model .m-tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;color:var(--acc2)}
+.model h3{font-size:1.25rem;font-weight:800}
+.model p{font-size:.92rem;color:var(--txt2);flex:1}
+.model .m-price{font-family:var(--mono);font-size:.85rem;color:var(--txt);border-top:1px dashed var(--card-border);padding-top:14px}
+
+/* contact */
+.contact-card{background:linear-gradient(135deg,color-mix(in srgb,var(--acc) 16%,transparent),color-mix(in srgb,var(--acc2) 10%,transparent));
+  border:1px solid var(--card-border);border-radius:20px;padding:clamp(34px,6vw,64px);text-align:center}
+.contact-card h2{margin-bottom:14px}
+.contact-card p{color:var(--txt2);max-width:56ch;margin:0 auto 28px}
+.mail{font-family:var(--mono);font-size:clamp(1rem,2.6vw,1.4rem);color:var(--acc2);text-decoration:none;
+  border-bottom:1px dashed var(--acc2);padding-bottom:2px;transition:opacity .2s}
+.mail:hover{opacity:.75}
+.contact-links{margin-top:26px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+.contact-links a{color:var(--txt2);text-decoration:none;font-size:.88rem;font-family:var(--mono);letter-spacing:.04em;transition:color .2s}
+.contact-links a:hover{color:var(--acc2)}
+
+footer{border-top:1px solid var(--card-border);padding:28px clamp(16px,6vw,72px);
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:.75rem;color:var(--txt2);letter-spacing:.05em}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<div class="bg-fx"></div>
+<div class="bg-grid"></div>
+
+<nav>
+  <a class="logo" href="#top">NEX<b>HOLD</b></a>
+  <div class="nav-links">
+    <a href="#servicos" data-i18n="nav.services">Serviços</a>
+    <a href="#experiencia" data-i18n="nav.exp">Experiência</a>
+    <a href="#modelos" data-i18n="nav.models">Modelos</a>
+    <a href="#contato" data-i18n="nav.contact">Contato</a>
+  </div>
+  <div class="ctrl">
+    <button class="flag-btn" id="lang-pt" title="Português" aria-label="Português"><svg width="20" height="14" viewBox="0 0 20 14"><rect width="20" height="14" rx="2" fill="#009739"/><path d="M10 2 L17.5 7 L10 12 L2.5 7 Z" fill="#FEDD00"/><circle cx="10" cy="7" r="2.4" fill="#012169"/></svg></button>
+    <button class="flag-btn" id="lang-en" title="English" aria-label="English"><svg width="20" height="14" viewBox="0 0 20 14"><rect width="20" height="14" rx="2" fill="#B22234"/><path d="M0 2.15h20M0 4.3h20M0 6.45h20M0 8.6h20M0 10.75h20" stroke="#fff" stroke-width="1.07"/><rect width="9" height="7.5" rx="1" fill="#3C3B6E"/></svg></button>
+    <button class="theme-btn" id="theme-btn" title="Tema / Theme"></button>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="tag" data-i18n="hero.tag">// arquitetura de nuvem &amp; plataformas de IA</div>
+  <h1 data-i18n-html="hero.title">Ambientes complexos, <span class="grad">previsíveis</span> — do Linux à IA generativa em produção.</h1>
+  <p class="sub" data-i18n="hero.sub">25+ anos de TI. Desenhamos e sustentamos plataformas governadas em AWS, Azure e GCP: infraestrutura como código, Kubernetes, Zero Trust e controle de custo — para que sua IA rode em produção sem estourar orçamento nem compliance.</p>
+  <div class="cta-row">
+    <a class="btn btn-primary" href="#contato" data-i18n="hero.cta1">Iniciar um projeto →</a>
+    <a class="btn btn-ghost" href="#modelos" data-i18n="hero.cta2">Modelos de contratação</a>
+  </div>
+  <div class="scroll-hint">▼ SCROLL</div>
+</header>
+
+<section id="numeros">
+  <div class="stats reveal">
+    <div class="stat"><div class="v">25+</div><div class="l" data-i18n="s1">anos de TI</div></div>
+    <div class="stat"><div class="v">800+</div><div class="l" data-i18n="s2">recursos migrados p/ Terraform sem downtime</div></div>
+    <div class="stat"><div class="v">24</div><div class="l" data-i18n="s3">VPCs em rede multi-conta hub-spoke</div></div>
+    <div class="stat"><div class="v">16</div><div class="l" data-i18n="s4">contas AWS com 100% das senhas de banco eliminadas</div></div>
+    <div class="stat"><div class="v">64k</div><div class="l" data-i18n="s5">contas migradas para Microsoft 365</div></div>
+  </div>
+</section>
+
+<section id="servicos">
+  <div class="sec-head reveal">
+    <div class="num">01</div>
+    <h2 data-i18n="sv.title">O que entregamos</h2>
+    <p data-i18n="sv.sub">Da fundação de rede multi-conta à plataforma onde a IA roda — escopo fechado, código versionado, documentação que fica com você.</p>
+  </div>
+  <div class="grid">
+    <div class="card reveal">
+      <span class="ic">☁️</span>
+      <h3 data-i18n="c1t">Arquitetura de Nuvem &amp; Landing Zones</h3>
+      <p data-i18n="c1p">Desenho e implantação de ambientes multi-conta AWS/Azure sob auditoria: rede hub-spoke com Transit Gateway, conectividade híbrida, DNS centralizado e provisionamento automatizado de contas (Account Vending Machine).</p>
+      <div class="chips"><span class="chip">AWS</span><span class="chip">Azure</span><span class="chip">Transit GW</span><span class="chip">AFT</span></div>
+    </div>
+    <div class="card reveal">
+      <span class="ic">📜</span>
+      <h3 data-i18n="c2t">Infraestrutura como Código</h3>
+      <p data-i18n="c2p">Migração de automação legada para Terraform com importação de centenas de recursos sem downtime, pipeline de CI/CD com plan/apply e merge controlado, módulos reutilizáveis e stacks orquestradas.</p>
+      <div class="chips"><span class="chip">Terraform</span><span class="chip">Terramate</span><span class="chip">Ansible</span><span class="chip">GitHub Actions</span></div>
+    </div>
+    <div class="card reveal">
+      <span class="ic">⎈</span>
+      <h3 data-i18n="c3t">Kubernetes &amp; Plataforma</h3>
+      <p data-i18n="c3p">EKS e OpenShift em produção: GitOps com ArgoCD, autoscaling orientado à experiência do usuário (RPS e latência P99 via KEDA), microsegmentação com Network Policies e portais de autosserviço com Backstage / Developer Hub.</p>
+      <div class="chips"><span class="chip">EKS</span><span class="chip">OpenShift</span><span class="chip">KEDA</span><span class="chip">ArgoCD</span><span class="chip">Backstage</span></div>
+    </div>
+    <div class="card reveal">
+      <span class="ic">🤖</span>
+      <h3 data-i18n="c4t">IA Generativa em Produção</h3>
+      <p data-i18n="c4p">Plataforma governada para LLMs: habilitação de modelos sob SCPs restritivas, inference profiles com roteamento cross-region, dimensionamento de throughput, decisão de plataforma por billing e sustentação de assistentes de IA.</p>
+      <div class="chips"><span class="chip">Amazon Bedrock</span><span class="chip">Azure AI Foundry</span><span class="chip">Claude</span><span class="chip">FinOps de inferência</span></div>
+    </div>
+    <div class="card reveal">
+      <span class="ic">🔐</span>
+      <h3 data-i18n="c5t">Zero Trust &amp; Identidade</h3>
+      <p data-i18n="c5p">Eliminação de senhas estáticas em escala com IAM Database Authentication, autenticação cross-cloud sem segredo via OIDC Workload Identity, federação Entra ID, acesso privado a serviços e auditoria ponta a ponta.</p>
+      <div class="chips"><span class="chip">IAM DB Auth</span><span class="chip">OIDC Federation</span><span class="chip">Entra ID</span><span class="chip">SCP</span></div>
+    </div>
+    <div class="card reveal">
+      <span class="ic">📊</span>
+      <h3 data-i18n="c6t">Dados, BI &amp; FinOps Multi-cloud</h3>
+      <p data-i18n="c6p">Pipelines de dados entre nuvens no padrão FOCUS, migração de capacidade Power BI → Fabric, otimização de custo recorrente de rede e DNS, e estratégia de capacidade reservada vs sob demanda.</p>
+      <div class="chips"><span class="chip">FOCUS 1.2</span><span class="chip">Microsoft Fabric</span><span class="chip">Power BI</span><span class="chip">FinOps</span></div>
+    </div>
+    <div class="card reveal">
+      <span class="ic">🔄</span>
+      <h3 data-i18n="c7t">Migrações em Escala</h3>
+      <p data-i18n="c7p">Migração de suítes de colaboração com dezenas de milhares de contas — correio, agendas, contatos e arquivos — incluindo desenvolvimento de ferramenta própria quando a origem não tem rota pronta.</p>
+      <div class="chips"><span class="chip">Microsoft 365</span><span class="chip">Graph API</span><span class="chip">Cutover planejado</span></div>
+    </div>
+    <div class="card reveal">
+      <span class="ic">🐧</span>
+      <h3 data-i18n="c8t">Linux, Middleware &amp; Missão Crítica</h3>
+      <p data-i18n="c8p">Mais de duas décadas em infraestrutura crítica: clusters de alta disponibilidade, middleware corporativo, mensageria e virtualização — a base que sustenta tudo o que está acima.</p>
+      <div class="chips"><span class="chip">RHEL / SUSE</span><span class="chip">IBM MQ</span><span class="chip">HA Cluster</span><span class="chip">Keycloak</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="experiencia">
+  <div class="sec-head reveal">
+    <div class="num">02</div>
+    <h2 data-i18n="ex.title">Experiência que virou método</h2>
+    <p data-i18n="ex.sub">Setores onde indisponibilidade e vazamento têm consequência real: governo federal, financeiro e meios de pagamento, telecom e educação.</p>
+  </div>
+  <div class="dlist">
+    <div class="ditem reveal"><div class="k" data-i18n="d1k">Setor público</div><p data-i18n-html="d1p"><b>Cloud Center of Excellence federal.</b> Rede multi-conta consolidada, IaC em escala, eliminação de senhas de banco e plataforma de IA generativa — tudo sob auditoria e janela de mudança.</p></div>
+    <div class="ditem reveal"><div class="k" data-i18n="d2k">Financeiro</div><p data-i18n-html="d2p"><b>Instituições financeiras e meios de pagamento.</b> Containers e Kubernetes em produção, observabilidade, integrações de baixa latência e ambientes regulados.</p></div>
+    <div class="ditem reveal"><div class="k" data-i18n="d3k">Telecom</div><p data-i18n-html="d3p"><b>Datacenter de operadora.</b> Suporte Unix/Linux crítico, clusters de HA, virtualização e bancos de dados em operação 24×7.</p></div>
+    <div class="ditem reveal"><div class="k" data-i18n="d4k">Corporativo</div><p data-i18n-html="d4p"><b>Projetos autônomos desde 2017.</b> Nuvem privada, pública e híbrida, ambientes de DR, migrações e modernização — com CNPJ próprio e nota fiscal.</p></div>
+  </div>
+</section>
+
+<section id="modelos">
+  <div class="sec-head reveal">
+    <div class="num">03</div>
+    <h2 data-i18n="md.title">Como trabalhamos</h2>
+    <p data-i18n="md.sub">Três formatos, um mesmo padrão de entrega: escopo claro, código e documentação versionados, comunicação assíncrona objetiva.</p>
+  </div>
+  <div class="models">
+    <div class="model reveal">
+      <div class="m-tag" data-i18n="m1tag">Para parceiros &amp; consultorias</div>
+      <h3>White Label</h3>
+      <p data-i18n="m1p">Atuamos como extensão invisível do seu time: sua marca, nosso arquiteto. Ideal para parceiros AWS, Red Hat e Microsoft em picos de demanda — quando o projeto já está vendido e falta capacidade técnica sênior.</p>
+      <div class="m-price" data-i18n="m1pr">Contrato B2B · NDA · sua metodologia</div>
+    </div>
+    <div class="model reveal">
+      <div class="m-tag" data-i18n="m2tag">Escopo &amp; prazo fechados</div>
+      <h3 data-i18n="m2t">Projeto por Escopo</h3>
+      <p data-i18n="m2p">Assessment, desenho de arquitetura, migração ou implantação com entrega definida e preço fechado. Comece pequeno para avaliar a entrega sem risco — um assessment de cluster ou uma landing zone mínima.</p>
+      <div class="m-price" data-i18n="m2pr">Proposta com milestones · aceite por entrega</div>
+    </div>
+    <div class="model reveal">
+      <div class="m-tag" data-i18n="m3tag">Alocação flexível</div>
+      <h3 data-i18n="m3t">Por Hora</h3>
+      <p data-i18n-html="m3p">Horas de arquitetura e engenharia para sustentação, troubleshooting e evolução contínua. Pacote mínimo de <b>80 horas</b>, consumo rastreado e relatório de utilização.</p>
+      <div class="m-price" data-i18n="m3pr">Pacote mínimo: 80h · remoto</div>
+    </div>
+  </div>
+</section>
+
+<section id="contato">
+  <div class="contact-card reveal">
+    <div class="sec-head" style="margin-bottom:0">
+      <div class="num" style="text-align:center">04</div>
+    </div>
+    <h2 data-i18n="ct.title">Vamos desenhar sua próxima plataforma?</h2>
+    <p data-i18n="ct.sub">Resposta em até um dia útil. Reunião inicial sem custo para entender o cenário e propor o melhor formato de contratação.</p>
+    <a class="mail" href="mailto:eleu.carlos@nexhold.com.br">eleu.carlos@nexhold.com.br</a>
+    <div class="contact-links">
+      <a href="https://www.linkedin.com/in/eleucarlos" target="_blank" rel="noopener">linkedin.com/in/eleucarlos</a>
+      <span data-i18n="ct.loc">Brasília/DF · 100% remoto</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 NEXHOLD SOLUTIONS LTDA · CNPJ 61.530.769/0001-06</span>
+  <span data-i18n="ft.tag">cloud · platform · ai · zero trust</span>
+</footer>
+
+<script>
+const I18N = {
+  pt: {
+    "nav.services":"Serviços","nav.exp":"Experiência","nav.models":"Modelos","nav.contact":"Contato",
+    "hero.tag":"// arquitetura de nuvem & plataformas de IA",
+    "hero.title":'Ambientes complexos, <span class="grad">previsíveis</span> — do Linux à IA generativa em produção.',
+    "hero.sub":"25+ anos de TI. Desenhamos e sustentamos plataformas governadas em AWS, Azure e GCP: infraestrutura como código, Kubernetes, Zero Trust e controle de custo — para que sua IA rode em produção sem estourar orçamento nem compliance.",
+    "hero.cta1":"Iniciar um projeto →","hero.cta2":"Modelos de contratação",
+    "s1":"anos de TI","s2":"recursos migrados p/ Terraform sem downtime","s3":"VPCs em rede multi-conta hub-spoke","s4":"contas AWS com 100% das senhas de banco eliminadas","s5":"contas migradas para Microsoft 365",
+    "sv.title":"O que entregamos","sv.sub":"Da fundação de rede multi-conta à plataforma onde a IA roda — escopo fechado, código versionado, documentação que fica com você.",
+    "c1t":"Arquitetura de Nuvem & Landing Zones","c1p":"Desenho e implantação de ambientes multi-conta AWS/Azure sob auditoria: rede hub-spoke com Transit Gateway, conectividade híbrida, DNS centralizado e provisionamento automatizado de contas (Account Vending Machine).",
+    "c2t":"Infraestrutura como Código","c2p":"Migração de automação legada para Terraform com importação de centenas de recursos sem downtime, pipeline de CI/CD com plan/apply e merge controlado, módulos reutilizáveis e stacks orquestradas.",
+    "c3t":"Kubernetes & Plataforma","c3p":"EKS e OpenShift em produção: GitOps com ArgoCD, autoscaling orientado à experiência do usuário (RPS e latência P99 via KEDA), microsegmentação com Network Policies e portais de autosserviço com Backstage / Developer Hub.",
+    "c4t":"IA Generativa em Produção","c4p":"Plataforma governada para LLMs: habilitação de modelos sob SCPs restritivas, inference profiles com roteamento cross-region, dimensionamento de throughput, decisão de plataforma por billing e sustentação de assistentes de IA.",
+    "c5t":"Zero Trust & Identidade","c5p":"Eliminação de senhas estáticas em escala com IAM Database Authentication, autenticação cross-cloud sem segredo via OIDC Workload Identity, federação Entra ID, acesso privado a serviços e auditoria ponta a ponta.",
+    "c6t":"Dados, BI & FinOps Multi-cloud","c6p":"Pipelines de dados entre nuvens no padrão FOCUS, migração de capacidade Power BI → Fabric, otimização de custo recorrente de rede e DNS, e estratégia de capacidade reservada vs sob demanda.",
+    "c7t":"Migrações em Escala","c7p":"Migração de suítes de colaboração com dezenas de milhares de contas — correio, agendas, contatos e arquivos — incluindo desenvolvimento de ferramenta própria quando a origem não tem rota pronta.",
+    "c8t":"Linux, Middleware & Missão Crítica","c8p":"Mais de duas décadas em infraestrutura crítica: clusters de alta disponibilidade, middleware corporativo, mensageria e virtualização — a base que sustenta tudo o que está acima.",
+    "ex.title":"Experiência que virou método","ex.sub":"Setores onde indisponibilidade e vazamento têm consequência real: governo federal, financeiro e meios de pagamento, telecom e educação.",
+    "d1k":"Setor público","d1p":"<b>Cloud Center of Excellence federal.</b> Rede multi-conta consolidada, IaC em escala, eliminação de senhas de banco e plataforma de IA generativa — tudo sob auditoria e janela de mudança.",
+    "d2k":"Financeiro","d2p":"<b>Instituições financeiras e meios de pagamento.</b> Containers e Kubernetes em produção, observabilidade, integrações de baixa latência e ambientes regulados.",
+    "d3k":"Telecom","d3p":"<b>Datacenter de operadora.</b> Suporte Unix/Linux crítico, clusters de HA, virtualização e bancos de dados em operação 24×7.",
+    "d4k":"Corporativo","d4p":"<b>Projetos autônomos desde 2017.</b> Nuvem privada, pública e híbrida, ambientes de DR, migrações e modernização — com CNPJ próprio e nota fiscal.",
+    "md.title":"Como trabalhamos","md.sub":"Três formatos, um mesmo padrão de entrega: escopo claro, código e documentação versionados, comunicação assíncrona objetiva.",
+    "m1tag":"Para parceiros & consultorias","m1p":"Atuamos como extensão invisível do seu time: sua marca, nosso arquiteto. Ideal para parceiros AWS, Red Hat e Microsoft em picos de demanda — quando o projeto já está vendido e falta capacidade técnica sênior.","m1pr":"Contrato B2B · NDA · sua metodologia",
+    "m2tag":"Escopo & prazo fechados","m2t":"Projeto por Escopo","m2p":"Assessment, desenho de arquitetura, migração ou implantação com entrega definida e preço fechado. Comece pequeno para avaliar a entrega sem risco — um assessment de cluster ou uma landing zone mínima.","m2pr":"Proposta com milestones · aceite por entrega",
+    "m3tag":"Alocação flexível","m3t":"Por Hora","m3p":"Horas de arquitetura e engenharia para sustentação, troubleshooting e evolução contínua. Pacote mínimo de <b>80 horas</b>, consumo rastreado e relatório de utilização.","m3pr":"Pacote mínimo: 80h · remoto",
+    "ct.title":"Vamos desenhar sua próxima plataforma?","ct.sub":"Resposta em até um dia útil. Reunião inicial sem custo para entender o cenário e propor o melhor formato de contratação.","ct.loc":"Brasília/DF · 100% remoto",
+    "ft.tag":"cloud · platform · ai · zero trust"
+  },
+  en: {
+    "nav.services":"Services","nav.exp":"Experience","nav.models":"Engagement","nav.contact":"Contact",
+    "hero.tag":"// cloud architecture & AI platforms",
+    "hero.title":'Complex environments, made <span class="grad">predictable</span> — from Linux to generative AI in production.',
+    "hero.sub":"25+ years in IT. We design and run governed platforms on AWS, Azure and GCP: infrastructure as code, Kubernetes, Zero Trust and cost control — so your AI runs in production without blowing the budget or compliance.",
+    "hero.cta1":"Start a project →","hero.cta2":"Engagement models",
+    "s1":"years in IT","s2":"resources imported to Terraform, zero downtime","s3":"VPCs in a hub-spoke multi-account network","s4":"AWS accounts with 100% of DB passwords eliminated","s5":"accounts migrated to Microsoft 365",
+    "sv.title":"What we deliver","sv.sub":"From multi-account network foundations to the platform where AI runs — fixed scope, versioned code, documentation that stays with you.",
+    "c1t":"Cloud Architecture & Landing Zones","c1p":"Design and rollout of audited multi-account AWS/Azure environments: hub-spoke networking with Transit Gateway, hybrid connectivity, centralized DNS and automated account vending (Account Vending Machine).",
+    "c2t":"Infrastructure as Code","c2p":"Migration of legacy automation to Terraform importing hundreds of resources with zero downtime, CI/CD pipelines with gated plan/apply, reusable modules and orchestrated stacks.",
+    "c3t":"Kubernetes & Platform Engineering","c3p":"EKS and OpenShift in production: GitOps with ArgoCD, user-experience-driven autoscaling (RPS and P99 latency via KEDA), microsegmentation with Network Policies and self-service portals with Backstage / Developer Hub.",
+    "c4t":"Generative AI in Production","c4p":"Governed platform for LLMs: model enablement under restrictive SCPs, cross-region inference profiles, throughput sizing, platform decision by billing, and ongoing operation of AI assistants.",
+    "c5t":"Zero Trust & Identity","c5p":"Elimination of static passwords at scale with IAM Database Authentication, secretless cross-cloud auth via OIDC Workload Identity, Entra ID federation, private service access and end-to-end audit.",
+    "c6t":"Data, BI & Multi-cloud FinOps","c6p":"Cross-cloud data pipelines in the FOCUS standard, Power BI → Fabric capacity migration, recurring network and DNS cost optimization, and reserved vs on-demand capacity strategy.",
+    "c7t":"Large-Scale Migrations","c7p":"Collaboration-suite migrations covering tens of thousands of accounts — mail, calendars, contacts and files — including building custom tooling when the source platform has no ready-made path.",
+    "c8t":"Linux, Middleware & Mission-Critical","c8p":"Two-plus decades in critical infrastructure: high-availability clusters, enterprise middleware, messaging and virtualization — the foundation everything else stands on.",
+    "ex.title":"Experience turned into method","ex.sub":"Sectors where downtime and leaks have real consequences: federal government, financial services and payments, telecom and education.",
+    "d1k":"Public sector","d1p":"<b>Federal Cloud Center of Excellence.</b> Consolidated multi-account networking, IaC at scale, database password elimination and a generative AI platform — all under audit and change windows.",
+    "d2k":"Financial","d2p":"<b>Financial institutions and payment providers.</b> Containers and Kubernetes in production, observability, low-latency integrations and regulated environments.",
+    "d3k":"Telecom","d3p":"<b>Carrier datacenter.</b> Mission-critical Unix/Linux support, HA clusters, virtualization and databases in 24×7 operation.",
+    "d4k":"Enterprise","d4p":"<b>Independent projects since 2017.</b> Private, public and hybrid cloud, DR environments, migrations and modernization — under our own registered company with invoicing.",
+    "md.title":"How we work","md.sub":"Three formats, one delivery standard: clear scope, versioned code and docs, objective async communication.",
+    "m1tag":"For partners & consultancies","m1p":"We operate as an invisible extension of your team: your brand, our architect. Ideal for AWS, Red Hat and Microsoft partners at demand peaks — when the deal is closed and senior delivery capacity is missing.","m1pr":"B2B contract · NDA · your methodology",
+    "m2tag":"Fixed scope & deadline","m2t":"Fixed-Scope Project","m2p":"Assessment, architecture design, migration or implementation with a defined deliverable and fixed price. Start small to evaluate delivery risk-free — a cluster assessment or a minimal landing zone.","m2pr":"Proposal with milestones · acceptance per deliverable",
+    "m3tag":"Flexible allocation","m3t":"Hourly","m3p":"Architecture and engineering hours for operations, troubleshooting and continuous evolution. Minimum pack of <b>80 hours</b>, tracked consumption and usage reporting.","m3pr":"Minimum pack: 80h · remote",
+    "ct.title":"Shall we design your next platform?","ct.sub":"Reply within one business day. Free initial call to understand your scenario and propose the best engagement model.","ct.loc":"Brasília, Brazil · 100% remote",
+    "ft.tag":"cloud · platform · ai · zero trust"
+  }
+};
+
+/* ---- language ---- */
+const root = document.documentElement;
+function setLang(l){
+  localStorage.setItem("nx-lang", l);
+  root.lang = l === "pt" ? "pt-BR" : "en";
+  document.getElementById("lang-pt").classList.toggle("active", l==="pt");
+  document.getElementById("lang-en").classList.toggle("active", l==="en");
+  const dict = I18N[l];
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const k = el.dataset.i18n; if(dict[k]!=null) el.textContent = dict[k];
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach(el=>{
+    const k = el.dataset.i18nHtml; if(dict[k]!=null) el.innerHTML = dict[k];
+  });
+}
+document.getElementById("lang-pt").onclick = ()=>setLang("pt");
+document.getElementById("lang-en").onclick = ()=>setLang("en");
+
+/* ---- theme: system / light / dark ---- */
+const themeBtn = document.getElementById("theme-btn");
+const mq = window.matchMedia("(prefers-color-scheme: light)");
+const SVG = {
+  system:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
+  light:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+  dark:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>'
+};
+function applyTheme(){
+  const mode = localStorage.getItem("nx-theme") || "system";
+  const resolved = mode === "system" ? (mq.matches ? "light" : "dark") : mode;
+  root.dataset.theme = resolved;
+  themeBtn.innerHTML = SVG[mode];
+  themeBtn.title = {system:"Tema: sistema / Theme: system", light:"Tema: claro / Theme: light", dark:"Tema: escuro / Theme: dark"}[mode];
+}
+themeBtn.onclick = ()=>{
+  const cur = localStorage.getItem("nx-theme") || "system";
+  const next = cur === "system" ? "light" : cur === "light" ? "dark" : "system";
+  localStorage.setItem("nx-theme", next); applyTheme();
+};
+mq.addEventListener("change", applyTheme);
+
+/* ---- reveal on scroll ---- */
+const io = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+
+/* init */
+applyTheme();
+setLang(localStorage.getItem("nx-lang") || "pt");
+</script>
+</body>
+</html>
