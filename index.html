@@ -79,6 +79,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;
 header.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;
   padding:120px clamp(16px,6vw,72px) 60px;position:relative}
 .tag{font-family:var(--mono);font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;color:var(--acc2);margin-bottom:22px}
+.slogan{font-family:var(--mono);font-size:clamp(.95rem,1.8vw,1.15rem);letter-spacing:.06em;color:var(--txt);
+  border-left:3px solid var(--acc2);padding:6px 0 6px 16px;margin-bottom:26px;
+  text-shadow:0 0 24px var(--glow)}
+.slogan b{color:var(--acc2);letter-spacing:.12em}
 h1{font-size:clamp(2.1rem,5.6vw,4.2rem);line-height:1.08;font-weight:800;letter-spacing:-.02em;max-width:16ch}
 h1 .grad{background:linear-gradient(92deg,var(--acc) 10%,var(--acc2) 90%);
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
@@ -185,6 +189,7 @@ footer{border-top:1px solid var(--card-border);padding:28px clamp(16px,6vw,72px)
 
 <header class="hero" id="top">
   <div class="tag" data-i18n="hero.tag">// arquitetura de nuvem &amp; plataformas de IA</div>
+  <p class="slogan" data-i18n-html="hero.slogan"><b>NexHold</b> — Conectar o que existe, sustentar o que vem!</p>
   <h1 data-i18n-html="hero.title">Ambientes complexos, <span class="grad">previsíveis</span> — do Linux à IA generativa em produção.</h1>
   <p class="sub" data-i18n="hero.sub">25+ anos de TI. Desenhamos e sustentamos plataformas governadas em AWS, Azure e GCP: infraestrutura como código, Kubernetes, Zero Trust e controle de custo — para que sua IA rode em produção sem estourar orçamento nem compliance.</p>
   <div class="cta-row">
@@ -329,6 +334,7 @@ const I18N = {
   pt: {
     "nav.services":"Serviços","nav.exp":"Experiência","nav.models":"Modelos","nav.contact":"Contato",
     "hero.tag":"// arquitetura de nuvem & plataformas de IA",
+    "hero.slogan":"<b>NexHold</b> — Conectar o que existe, sustentar o que vem!",
     "hero.title":'Ambientes complexos, <span class="grad">previsíveis</span> — do Linux à IA generativa em produção.',
     "hero.sub":"25+ anos de TI. Desenhamos e sustentamos plataformas governadas em AWS, Azure e GCP: infraestrutura como código, Kubernetes, Zero Trust e controle de custo — para que sua IA rode em produção sem estourar orçamento nem compliance.",
     "hero.cta1":"Iniciar um projeto →","hero.cta2":"Modelos de contratação",
@@ -357,6 +363,7 @@ const I18N = {
   en: {
     "nav.services":"Services","nav.exp":"Experience","nav.models":"Engagement","nav.contact":"Contact",
     "hero.tag":"// cloud architecture & AI platforms",
+    "hero.slogan":"<b>NexHold</b> — Connecting what exists, sustaining what comes next!",
     "hero.title":'Complex environments, made <span class="grad">predictable</span> — from Linux to generative AI in production.',
     "hero.sub":"25+ years in IT. We design and run governed platforms on AWS, Azure and GCP: infrastructure as code, Kubernetes, Zero Trust and cost control — so your AI runs in production without blowing the budget or compliance.",
     "hero.cta1":"Start a project →","hero.cta2":"Engagement models",
