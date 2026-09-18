@@ -166,6 +166,21 @@ footer{border-top:1px solid var(--card-border);padding:28px clamp(16px,6vw,72px)
 
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
 .reveal.in{opacity:1;transform:none}
+
+/* scroll to top */
+.scroll-top{position:fixed;bottom:30px;right:30px;width:50px;height:50px;border-radius:50%;
+  border:none;cursor:pointer;z-index:998;padding:0;display:flex;align-items:center;justify-content:center;
+  background:var(--bg2);border:1px solid var(--card-border);
+  box-shadow:0 4px 20px rgba(0,0,0,.3);outline:none;
+  opacity:0;visibility:hidden;transform:translateY(20px);
+  transition:opacity .3s ease,transform .3s ease,visibility .3s,box-shadow .3s,border-color .3s}
+.scroll-top.show{opacity:1;visibility:visible;transform:none}
+.scroll-top:hover{transform:translateY(-3px);border-color:var(--acc2);box-shadow:0 8px 25px var(--glow)}
+.scroll-top svg.ring{position:absolute;inset:0}
+.scroll-top .ring-track{stroke:var(--card-border)}
+.scroll-top .ring-fill{stroke:var(--acc2);transition:stroke-dashoffset .2s ease}
+.scroll-top .arr{position:relative;z-index:1;color:var(--acc2)}
+@media(max-width:768px){.scroll-top{bottom:20px;right:20px;width:44px;height:44px}}
 </style>
 </head>
 <body>
@@ -329,6 +344,15 @@ footer{border-top:1px solid var(--card-border);padding:28px clamp(16px,6vw,72px)
   <span data-i18n="ft.tag">cloud · platform · ai · zero trust</span>
 </footer>
 
+<button class="scroll-top" id="scroll-top" aria-label="Voltar ao topo" title="Voltar ao topo">
+  <svg class="ring" width="50" height="50" viewBox="0 0 50 50">
+    <circle class="ring-track" cx="25" cy="25" r="20" fill="none" stroke-width="3"/>
+    <circle class="ring-fill" id="ring-fill" cx="25" cy="25" r="20" fill="none" stroke-width="3"
+      stroke-linecap="round" stroke-dasharray="125.66" stroke-dashoffset="125.66" transform="rotate(-90 25 25)"/>
+  </svg>
+  <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
 <script>
 const I18N = {
   pt: {
@@ -390,6 +414,20 @@ const I18N = {
     "ft.tag":"cloud · platform · ai · zero trust"
   }
 };
+
+/* ---- scroll to top ---- */
+const stBtn = document.getElementById("scroll-top");
+const ringFill = document.getElementById("ring-fill");
+const CIRC = 2 * Math.PI * 20;
+function onScroll(){
+  const st = window.pageYOffset || document.documentElement.scrollTop;
+  const docH = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const p = docH > 0 ? (st / docH) * 100 : 0;
+  ringFill.style.strokeDashoffset = CIRC - (p / 100) * CIRC;
+  stBtn.classList.toggle("show", st > 300);
+}
+window.addEventListener("scroll", onScroll, {passive:true});
+stBtn.onclick = ()=>window.scrollTo({top:0,behavior:"smooth"});
 
 /* ---- language ---- */
 const root = document.documentElement;
